@@ -8,13 +8,13 @@ http.createServer(function (req, res ) {
 // Part 2: The Minecraft Bot
 const mineflayer = require('mineflayer');
 
-function createBot() {
-  const bot = mineflayer.createBot({
-    host: 'MentallyStable2SMP.play.hosting.play.hosting', // <-- Your server IP
-    username: 'AFK_Bot_247', // <-- Your bot's name
-    // If your server is in "online-mode", this will be more complex.
-    // For now, we assume it's "offline-mode".
-  });
+const bot = mineflayer.createBot({
+  host: 'MentallyStable2SMP.play.hosting.play.hosting',
+  username: 'AFK_Bot_247',
+  auth: 'offline',
+  version: '1.21.10' // <--- THE CORRECT VERSION!
+});
+
 
   bot.on('login', () => {
     console.log('Bot has logged in.');

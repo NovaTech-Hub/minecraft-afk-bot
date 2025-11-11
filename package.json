@@ -1,0 +1,13 @@
+{
+  "name": "minecraft-bot",
+  "version": "1.0.0",
+  "description": "A 24/7 Minecraft AFK bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "mineflayer": "^4.5.1",
+    "http": "^0.0.1-security"
+  }
+}

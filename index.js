@@ -1,23 +1,26 @@
 // Part 1: The Web Server (to keep it awake)
 const http = require('http' );
 http.createServer(function (req, res ) {
-  res.write("I'm alive!"); // The message UptimeRobot will see
+  res.write("I'm alive!");
   res.end();
 }).listen(8080);
 
-// Part 2: The Minecraft Bot
+// Part 2: The Minecraft JAVA Bot
 const mineflayer = require('mineflayer');
 
-const bot = mineflayer.createBot({
-  host: 'MentallyStable2SMP.play.hosting.play.hosting',
-  username: 'AFK_Bot_247',
-  auth: 'offline',
-  version: '1.21.10' // <--- THE CORRECT VERSION!
-});
+// This function wraps the bot creation so we can call it again to reconnect
+function createBot() {
+  console.log('Attempting to connect to the JAVA server...');
 
+  const bot = mineflayer.createBot({
+    host: 'MentallyStable2SMP.play.hosting.play.hosting', // Server address
+    username: 'AFK_Bot_247', // Bot's name
+    auth: 'offline',   // Assumes the server is offline-mode
+    version: '1.21.10' // The correct Java Edition version!
+  });
 
   bot.on('login', () => {
-    console.log('Bot has logged in.');
+    console.log('Bot has logged in to the Java server.');
     // This makes the bot jump every 30 seconds to avoid being kicked for AFK
     setInterval(() => {
       bot.setControlState('jump', true);
@@ -27,20 +30,20 @@ const bot = mineflayer.createBot({
 
   bot.on('kicked', (reason) => {
     console.log('Bot was kicked for:', reason);
-    // Try to reconnect after 5 minutes
-    setTimeout(createBot, 5 * 60 * 1000);
+    console.log('Will try to reconnect in 1 minute...');
+    setTimeout(createBot, 60000);
   });
 
   bot.on('error', (err) => {
-    console.log('An error occurred:', err);
-    // Try to reconnect after 5 minutes
-    setTimeout(createBot, 5 * 60 * 1000);
+    console.log('An error occurred:', err.message);
+    console.log('Will try to reconnect in 1 minute...');
+    setTimeout(createBot, 60000);
   });
 
-  bot.on('end', () => {
-    console.log('Bot has disconnected.');
-    // Try to reconnect after 5 minutes
-    setTimeout(createBot, 5 * 60 * 1000);
+  bot.on('end', (reason) => {
+    console.log('Bot has disconnected.', reason);
+    console.log('Will try to reconnect in 1 minute...');
+    setTimeout(createBot, 60000);
   });
 }
 
